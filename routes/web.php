@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AccueilController;
+use App\Http\Controllers\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,3 +30,4 @@ Route::get('/login', [AuthController::class, 'loginForm'])->name('auth.login');
 
 // Route pour traiter la soumission du formulaire de connexion
 Route::post('/login', [AuthController::class, 'login']);
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
