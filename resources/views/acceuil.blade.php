@@ -3,473 +3,434 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SRMMS - Société Régionale Multiservices Marrakech-Safi</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>SRMMS - Services Multiservices Marrakech-Safi</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #1a73e8;
-            --secondary-color: #f50057;
-            --dark-color: #333;
+            --primary-color: #0056b3;
+            --secondary-color: #17a2b8;
+            --accent-color: #ffc107;
+            --dark-color: #343a40;
             --light-color: #f8f9fa;
         }
         
         body {
-            font-family: 'Poppins', sans-serif;
-            overflow-x: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            line-height: 1.6;
         }
         
-        /* Navbar Styling */
+        /* Navigation */
         .navbar {
-            transition: all 0.4s ease;
             padding: 1rem 0;
-            background: rgba(0, 0, 0, 0.7) !important;
-            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(135deg, var(--primary-color), #003366);
         }
         
         .navbar-brand {
-            font-weight: 700;
-            font-size: 1.8rem;
-            color: #fff;
+            display: flex;
+            align-items: center;
         }
         
-        .navbar-shrink {
-            padding: 0.5rem 0;
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+        .navbar-logo {
+            height: 45px;
+            transition: transform 0.3s ease;
+        }
+        
+        .navbar-logo:hover {
+            transform: scale(1.05);
         }
         
         .nav-link {
-            position: relative;
-            margin: 0 0.5rem;
+            color: white !important;
             font-weight: 500;
+            margin: 0 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
             transition: all 0.3s ease;
         }
         
-        .nav-link:after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: 0;
-            left: 0;
-            background-color: var(--secondary-color);
-            transition: width 0.3s ease;
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
         }
         
-        .nav-link:hover:after, .nav-link.active:after {
-            width: 100%;
+        .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-connexion {
+            background-color: var(--accent-color);
+            color: var(--dark-color) !important;
+            font-weight: 600;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            border: none;
+        }
+        
+        .btn-connexion:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
         
         /* Hero Section */
-        .hero-section {
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/api/placeholder/1920/800') no-repeat center center;
+            background-size: cover;
+            padding: 8rem 0;
+            color: white;
+            text-align: center;
             position: relative;
-            background: linear-gradient(135deg, var(--primary-color), #4a148c);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            color: #fff;
-            overflow: hidden;
-        }
-        
-        .hero-section:before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('/api/placeholder/1200/800') center/cover no-repeat;
-            opacity: 0.2;
-            mix-blend-mode: overlay;
-        }
-        
-        .hero-title {
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin-bottom: 1.5rem;
-            position: relative;
-        }
-        
-        .hero-title:after {
-            content: '';
-            position: absolute;
-            bottom: -15px;
-            left: 0;
-            width: 100px;
-            height: 4px;
-            background: var(--secondary-color);
-        }
-        
-        .hero-subtitle {
-            font-size: 1.5rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
         }
         
         .hero-content {
-            position: relative;
-            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
         }
         
-        .hero-image {
-            position: relative;
-            transform: perspective(1000px) rotateY(-15deg);
-            transition: transform 1s ease;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 1s ease;
+        }
+        
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease 0.3s;
+            animation-fill-mode: both;
+        }
+        
+        .hero-btns {
+            animation: fadeInUp 1s ease 0.6s;
+            animation-fill-mode: both;
+        }
+        
+        .btn-hero {
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            margin: 0 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary-custom {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-primary-custom:hover {
+            background-color: #004494;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-outline-light:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Wave Divider */
+        .wave-divider {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
             overflow: hidden;
+            line-height: 0;
         }
         
-        .hero-image:hover {
-            transform: perspective(1000px) rotateY(0);
+        .wave-divider svg {
+            display: block;
+            width: calc(100% + 1.3px);
+            height: 65px;
+        }
+        
+        .wave-divider .shape-fill {
+            fill: #FFFFFF;
         }
         
         /* Services Section */
         .section-title {
-            position: relative;
-            margin-bottom: 3rem;
-            font-size: 2.5rem;
             text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            padding-bottom: 15px;
         }
         
         .section-title:after {
             content: '';
             position: absolute;
-            bottom: -15px;
+            bottom: 0;
             left: 50%;
             transform: translateX(-50%);
             width: 80px;
-            height: 4px;
+            height: 3px;
             background: var(--primary-color);
         }
         
         .service-card {
-            position: relative;
-            background: #fff;
+            background: white;
             border-radius: 15px;
-            padding: 30px 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
-            text-align: center;
-            height: 100%;
-            border: 1px solid rgba(0, 0, 0, 0.05);
             overflow: hidden;
-        }
-        
-        .service-card:before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 0;
-            bottom: 0;
-            left: 0;
-            background: linear-gradient(to top, rgba(26, 115, 232, 0.1), transparent);
-            transition: all 0.5s ease;
-            z-index: 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            border-top: 4px solid var(--primary-color);
         }
         
         .service-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-        }
-        
-        .service-card:hover:before {
-            height: 100%;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
         }
         
         .service-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 1.5rem;
-            background: rgba(26, 115, 232, 0.1);
-            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            width: 80px;
+            height: 80px;
+            margin: 2rem auto 1rem;
+            border-radius: 50%;
+            background-color: rgba(0, 86, 179, 0.1);
             color: var(--primary-color);
-            position: relative;
-            z-index: 1;
             transition: all 0.3s ease;
         }
         
         .service-card:hover .service-icon {
-            background: var(--primary-color);
+            background-color: var(--primary-color);
             color: white;
-            transform: rotateY(360deg);
-            transition: transform 0.8s ease, background 0.3s ease, color 0.3s ease;
+            transform: rotateY(180deg);
         }
         
         .service-card-title {
-            margin-bottom: 1rem;
             font-weight: 600;
-            position: relative;
-            z-index: 1;
+            margin-bottom: 1rem;
+            text-align: center;
+            color: var(--dark-color);
         }
         
         .service-card-text {
-            color: #6c757d;
+            color: #666;
+            text-align: center;
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+            flex-grow: 1;
+        }
+        
+        /* Stats Section */
+        .stats-section {
+            background-color: var(--primary-color);
+            padding: 4rem 0;
+            color: white;
             position: relative;
-            z-index: 1;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 2rem 1rem;
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        
+        .stat-text {
+            font-size: 1.25rem;
+            opacity: 0.9;
         }
         
         /* Testimonials */
+        .testimonial-section {
+            padding: 5rem 0;
+            background-color: #f8f9fa;
+        }
+        
         .testimonial-card {
-            position: relative;
-            border: none;
+            background: white;
             border-radius: 15px;
-            overflow: hidden;
-            margin-bottom: 20px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
-            transition: all 0.3s ease;
-            height: 100%;
-        }
-        
-        .testimonial-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-        }
-        
-        .testimonial-card .card-body {
             padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
             position: relative;
         }
         
-        .testimonial-card .card-body:before {
+        .testimonial-card:before {
             content: '\201C';
-            font-family: serif;
+            font-size: 80px;
             position: absolute;
-            top: 10px;
+            top: -20px;
             left: 20px;
-            font-size: 5rem;
-            color: rgba(26, 115, 232, 0.1);
-            line-height: 1;
+            color: var(--primary-color);
+            opacity: 0.2;
+            font-family: Georgia, serif;
         }
         
-        .rating {
-            margin-bottom: 1rem;
-            color: #FFD700;
-        }
-        
-        .avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--primary-color);
-            color: white;
-            font-weight: bold;
-        }
-        
-        /* Contact Section */
-        .contact-info-item {
-            display: flex;
-            align-items: center;
+        .testimonial-text {
+            font-style: italic;
             margin-bottom: 1.5rem;
+            color: #555;
         }
         
-        .contact-info-item i {
-            width: 40px;
-            height: 40px;
-            background: var(--primary-color);
-            color: white;
-            border-radius: 50%;
+        .testimonial-author {
             display: flex;
             align-items: center;
-            justify-content: center;
+        }
+        
+        .testimonial-author-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
             margin-right: 1rem;
         }
         
-        .social-links {
-            display: flex;
-            gap: 1rem;
+        .testimonial-author-name {
+            font-weight: 600;
+            margin-bottom: 0.2rem;
         }
         
-        .social-links a {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--light-color);
-            color: var(--dark-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-        
-        .social-links a:hover {
-            background: var(--primary-color);
-            color: white;
-            transform: translateY(-5px);
-        }
-        
-        .contact-form {
-            border-radius: 20px;
-            overflow: hidden;
-        }
-        
-        .form-control {
-            border-radius: 10px;
-            padding: 0.8rem 1.2rem;
-            margin-bottom: 1rem;
-            border: 1px solid #ced4da;
-            transition: all 0.3s ease;
-        }
-        
-        .form-control:focus {
-            box-shadow: none;
-            border-color: var(--primary-color);
-        }
-        
-        .btn-primary {
-            background: var(--primary-color);
-            border: none;
-            border-radius: 50px;
-            padding: 0.8rem 2rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-primary:hover {
-            background: #0d47a1;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(26, 115, 232, 0.4);
-        }
-        
-        .btn-light {
-            border-radius: 50px;
-            padding: 0.8rem 2rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-outline-light {
-            border-radius: 50px;
-            padding: 0.8rem 2rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-outline-light:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
-        }
-        
-        /* Floating shapes */
-        .floating-shape {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            animation: float 10s ease-in-out infinite;
-        }
-        
-        .shape-1 {
-            width: 200px;
-            height: 200px;
-            top: 10%;
-            left: 5%;
-            animation-delay: 0s;
-        }
-        
-        .shape-2 {
-            width: 100px;
-            height: 100px;
-            top: 20%;
-            right: 10%;
-            animation-delay: 2s;
-        }
-        
-        .shape-3 {
-            width: 150px;
-            height: 150px;
-            bottom: 15%;
-            right: 5%;
-            animation-delay: 4s;
-        }
-        
-        @keyframes float {
-            0% {
-                transform: translate(0, 0) rotate(0deg);
-            }
-            50% {
-                transform: translate(20px, 20px) rotate(10deg);
-            }
-            100% {
-                transform: translate(0, 0) rotate(0deg);
-            }
-        }
-        
-        /* Scroll Progress Indicator */
-        .scroll-progress {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 0%;
-            height: 4px;
-            background: var(--secondary-color);
-            z-index: 9999;
-            transition: width 0.1s linear;
+        .testimonial-author-title {
+            color: #777;
+            font-size: 0.9rem;
         }
         
         /* Footer */
-        footer {
-            background: var(--dark-color);
+        .footer {
+            background: linear-gradient(135deg, #343a40, #1a1e21);
             color: white;
-            padding: 3rem 0;
-        }
-        
-        .footer-title {
-            font-weight: 600;
-            margin-bottom: 1.5rem;
+            padding-top: 4rem;
             position: relative;
-            padding-bottom: 10px;
         }
         
-        .footer-title:after {
+        .footer h5 {
+            position: relative;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .footer h5:after {
             content: '';
             position: absolute;
             bottom: 0;
             left: 0;
             width: 50px;
             height: 2px;
-            background: var(--secondary-color);
+            background: var(--accent-color);
         }
         
-        .footer-links {
-            list-style: none;
-            padding: 0;
+        .footer p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 1rem;
         }
         
-        .footer-links li {
-            margin-bottom: 0.8rem;
+        .footer i {
+            margin-right: 10px;
+            color: var(--accent-color);
         }
         
-        .footer-links a {
-            color: rgba(255, 255, 255, 0.7);
-            text-decoration: none;
+        .social-icons {
+            margin-bottom: 1.5rem;
+        }
+        
+        .social-icons a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            margin: 0 5px;
+            color: white;
             transition: all 0.3s ease;
         }
         
-        .footer-links a:hover {
-            color: white;
-            padding-left: 5px;
+        .social-icons a:hover {
+            background-color: var(--accent-color);
+            color: var(--dark-color);
+            transform: translateY(-3px);
         }
         
-        .footer-bottom {
-            padding-top: 2rem;
-            margin-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            text-align: center;
+        .copyright {
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 1.5rem 0;
+            margin-top: 3rem;
+        }
+        
+        .copyright p {
+            margin-bottom: 0;
+            font-size: 0.9rem;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            margin: 0 10px;
+            transition: color 0.3s ease;
+            text-decoration: none;
+        }
+        
+        .footer-links a:hover {
+            color: var(--accent-color);
+        }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .btn-hero {
+                display: block;
+                width: 100%;
+                margin: 0.5rem 0;
+            }
+            
+            .service-icon {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .stat-number {
+                font-size: 2.5rem;
+            }
         }
     </style>
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
-            <a class="navbar-brand" href="#">SRMMS</a>
+            <a class="navbar-brand" href="#">
+                <img src="https://www.radeema.ma/wp-content/themes/radeema-v2/assets/logo-SRM-Marrakech.svg" alt="Logo SRMMS" class="navbar-logo">
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -477,143 +438,228 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link active" href="#">Accueil</a></li>
                     <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">À propos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#testimonials">Témoignages</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                    <li class="nav-item"><a class="btn btn-connexion" href="{{ route('login') }}">Connexion</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="hero-section text-white">
-        <div class="container hero-content">
-            <div class="row align-items-center">
-                <div class="col-lg-7">
-                    <h1 class="hero-title">Société Régionale Multiservices Marrakech-Safi</h1>
-                    <p class="hero-subtitle">Des solutions professionnelles adaptées à tous vos besoins</p>
-                    <a href="#services" class="btn btn-light btn-lg me-3">Nos Services</a>
-                    <a href="#contact" class="btn btn-outline-light btn-lg">Contactez-nous</a>
-                </div>
-                <div class="col-lg-5 d-none d-lg-block">
-                    <img src="/api/placeholder/400/320" alt="SRMMS Services" class="img-fluid rounded">
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Solutions Multiservices pour Marrakech-Safi</h1>
+                <p>SRMMS vous offre des services de qualité avec des solutions adaptées à tous vos besoins professionnels et personnels.</p>
+                <div class="hero-btns">
+                    <a href="#services" class="btn btn-primary-custom btn-hero">Nos Services</a>
+                    <a href="#contact" class="btn btn-outline-light btn-hero">Contactez-nous</a>
                 </div>
             </div>
+        </div>
+        <div class="wave-divider">
+            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+            </svg>
         </div>
     </section>
 
     <!-- Services Section -->
-    <section id="services" class="container my-5">
+    <section id="services" class="container my-5 py-5">
         <h2 class="section-title fw-bold">Nos Services</h2>
         <div class="row g-4">
-            <!-- Service Statique -->
             <div class="col-md-4 mb-4">
                 <div class="service-card">
-                    <div class="service-icon"><i class="fas fa-tools fa-2x"></i></div>
+                    <div class="service-icon">
+                        <i class="fas fa-exclamation-circle fa-2x"></i>
+                    </div>
                     <div class="card-body">
-                        <h4 class="service-card-title">Maintenance</h4>
-                        <p class="service-card-text">Services de maintenance professionnelle pour vos installations et équipements.</p>
+                        <h4 class="service-card-title">Réclamations</h4>
+                        <p class="service-card-text">Gérez et suivez vos réclamations en temps réel avec notre système intuitif. Une réponse rapide garantie.</p>
                     </div>
                 </div>
             </div>
             <div class="col-md-4 mb-4">
                 <div class="service-card">
-                    <div class="service-icon"><i class="fas fa-building fa-2x"></i></div>
+                    <div class="service-icon">
+                        <i class="fas fa-user-graduate fa-2x"></i>
+                    </div>
                     <div class="card-body">
-                        <h4 class="service-card-title">Construction</h4>
-                        <p class="service-card-text">Solutions complètes de construction et rénovation pour tous vos projets.</p>
+                        <h4 class="service-card-title">Espace Stagiaire</h4>
+                        <p class="service-card-text">Un espace dédié aux stagiaires pour accéder aux ressources pédagogiques et suivre leur progression.</p>
                     </div>
                 </div>
             </div>
             <div class="col-md-4 mb-4">
                 <div class="service-card">
-                    <div class="service-icon"><i class="fas fa-leaf fa-2x"></i></div>
+                    <div class="service-icon">
+                        <i class="fas fa-file-invoice-dollar fa-2x"></i>
+                    </div>
                     <div class="card-body">
-                        <h4 class="service-card-title">Jardinage</h4>
-                        <p class="service-card-text">Entretien et aménagement d'espaces verts pour particuliers et professionnels.</p>
+                        <h4 class="service-card-title">Suivi de Factures</h4>
+                        <p class="service-card-text">Suivez vos factures et paiements en temps réel, avec historique complet et notifications automatiques.</p>
                     </div>
                 </div>
             </div>
+            <div class="col-md-4 mb-4">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-hands-helping fa-2x"></i>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="service-card-title">Assistance Clientèle</h4>
+                        <p class="service-card-text">Notre équipe d'experts est disponible pour répondre à toutes vos questions et vous accompagner.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-chart-line fa-2x"></i>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="service-card-title">Analyses & Rapports</h4>
+                        <p class="service-card-text">Obtenez des données détaillées et des rapports personnalisés pour optimiser votre utilisation.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-mobile-alt fa-2x"></i>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="service-card-title">Application Mobile</h4>
+                        <p class="service-card-text">Accédez à tous nos services depuis votre smartphone avec notre application dédiée.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-            <!-- Services dynamiques -->
-            @foreach($services as $service)
-                <div class="col-md-4 mb-4">
-                    <div class="service-card">
-                        <div class="service-icon">
-                            <i class="{{ $service->icon }} fa-2x"></i>
-                        </div>
-                        <div class="card-body">
-                            <h4 class="service-card-title">{{ $service->title }}</h4>
-                            <p class="service-card-text">{{ $service->description }}</p>
-                        </div>
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 col-6">
+                    <div class="stat-item">
+                        <span class="stat-number">10+</span>
+                        <span class="stat-text">Années d'expérience</span>
                     </div>
                 </div>
-            @endforeach
+                <div class="col-md-3 col-6">
+                    <div class="stat-item">
+                        <span class="stat-number">15K+</span>
+                        <span class="stat-text">Clients satisfaits</span>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-item">
+                        <span class="stat-number">98%</span>
+                        <span class="stat-text">Taux de satisfaction</span>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-item">
+                        <span class="stat-number">24/7</span>
+                        <span class="stat-text">Support disponible</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
     <!-- Testimonials Section -->
-    <section class="bg-light py-5">
+    <section id="testimonials" class="testimonial-section">
         <div class="container">
             <h2 class="section-title fw-bold">Témoignages Clients</h2>
             <div class="row">
-                <!-- Exemple de témoignage -->
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <div class="mb-3 text-warning">
-                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                            </div>
-                            <p class="card-text">"Un service exceptionnel et professionnel. L'équipe de SRMMS a dépassé toutes nos attentes."</p>
-                            <div class="d-flex align-items-center">
-                                <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">AM</div>
-                                <div class="ms-3">
-                                    <p class="mb-0 fw-bold">Ahmed M.</p>
-                                    <small class="text-muted">Marrakech</small>
-                                </div>
+                <div class="col-md-6">
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">SRMMS a complètement transformé notre façon de gérer nos factures. Le système est intuitif et l'équipe de support est toujours disponible pour nous aider.</p>
+                        <div class="testimonial-author">
+                            <img src="/api/placeholder/60/60" alt="Ahmed Benani" class="testimonial-author-image">
+                            <div>
+                                <h5 class="testimonial-author-name">Ahmed Benani</h5>
+                                <p class="testimonial-author-title">Directeur Commercial, Société XYZ</p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- Répéter ou boucler pour d'autres témoignages -->
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="container my-5">
-        <div class="row">
-            <div class="col-lg-6">
-                <h2 class="section-title fw-bold">Contactez-nous</h2>
-                <p class="mb-4">Nous sommes à votre disposition pour répondre à toutes vos questions et vous accompagner dans vos projets.</p>
-                <div class="contact-info-item"><i class="fas fa-map-marker-alt"></i><span>Avenue Hassan II, Marrakech, Maroc</span></div>
-                <div class="contact-info-item"><i class="fas fa-phone"></i><span>+212 528 123456</span></div>
-                <div class="contact-info-item"><i class="fas fa-envelope"></i><span>contact@srmms.ma</span></div>
-                <div class="social-links mt-4">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
-            <div class="col-lg-6 mt-4 mt-lg-0">
-                <div class="card border-0 shadow-sm">
-                    <div class="card-body p-4">
-                        <h4 class="card-title mb-4">Envoyez-nous un message</h4>
-                        <form>
-                            <div class="mb-3">
-                                <input type="text" class="form-control" placeholder="Votre nom">
+                <div class="col-md-6">
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">En tant que stagiaire, j'ai apprécié l'espace dédié qui m'a permis d'accéder facilement à toutes les ressources dont j'avais besoin. Une expérience très formatrice.</p>
+                        <div class="testimonial-author">
+                            <img src="/api/placeholder/60/60" alt="Leila Tazi" class="testimonial-author-image">
+                            <div>
+                                <h5 class="testimonial-author-name">Leila Tazi</h5>
+                                <p class="testimonial-author-title">Ancienne Stagiaire</p>
                             </div>
-                            <div class="mb-3">
-                                <input type="email" class="form-control" placeholder="Votre email">
-                            </div>
-                            <div class="mb-3">
-                                <textarea class="form-control" rows="4" placeholder="Votre message"></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Envoyer</button>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="footer">
+        <div class="container">
+            <div class="row">
+                <!-- Colonne 1 : À Propos -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <h5 class="fw-bold">À Propos de SRMMS</h5>
+                    <p>Depuis 2015, SRMMS est devenu un leader régional dans les services multiservices à Marrakech-Safi. Nous nous engageons à offrir des solutions personnalisées avec un service client exceptionnel.</p>
+                    <p>Notre équipe de professionnels qualifiés est prête à répondre à tous vos besoins avec expertise et dévouement.</p>
+                </div>
+                
+                <!-- Colonne 2 : Contact -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <h5 class="fw-bold">Contactez-Nous</h5>
+                    <p><i class="fas fa-map-marker-alt"></i> Avenue Hassan II, Résidence Firdaous, Étage 3, Marrakech</p>
+                    <p><i class="fas fa-phone"></i> +212 528 123456 | +212 661 987654</p>
+                    <p><i class="fas fa-envelope"></i> contact@srmms.ma</p>
+                    <p><i class="fas fa-clock"></i> Lun-Ven: 8h30-18h00 | Sam: 9h00-13h00</p>
+                </div>
+                
+                <!-- Colonne 3 : Newsletter -->
+                <div class="col-lg-4 col-md-12">
+                    <h5 class="fw-bold">Newsletter</h5>
+                    <p>Inscrivez-vous pour recevoir nos actualités et offres exclusives.</p>
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control" placeholder="Votre adresse email" aria-label="Email">
+                        <button class="btn btn-warning" type="button">S'inscrire</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Réseaux sociaux -->
+            <div class="text-center social-icons">
+                <a href="#"><i class="fab fa-facebook fa-lg"></i></a>
+                <a href="#"><i class="fab fa-twitter fa-lg"></i></a>
+                <a href="#"><i class="fab fa-linkedin fa-lg"></i></a>
+                <a href="#"><i class="fab fa-instagram fa-lg"></i></a>
+                <a href="#"><i class="fab fa-whatsapp fa-lg"></i></a>
+            </div>
+            
+            <!-- Copyright -->
+            <div class="copyright">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-md-6 text-center text-md-start">
+                            <p>&copy; 2025 SRMMS Multiservices. Tous droits réservés.</p>
+                        </div>
+                        <div class="col-md-6 text-center text-md-end footer-links">
+                            <a href="#">Mentions légales</a>
+                            <a href="#">Politique de confidentialité</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
+</html>

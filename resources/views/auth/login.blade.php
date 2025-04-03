@@ -1,911 +1,623 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TechAssets - Authentification</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome pour les icônes -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Connexion - SRM</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <style>
-        /* Variables pour les couleurs et faciliter la maintenance */
         :root {
-            --primary: #6d28d9;
-            --primary-dark: #5b21b6;
-            --primary-light: #ddd6fe;
-            --secondary: #0f172a;
-            --accent: #10b981;
-            --light: #f8fafc;
-            --dark: #0f172a;
-            --gray-light: #e2e8f0;
-            --gray: #94a3b8;
-            --white: #ffffff;
-            --card-border-radius: 24px;
-            --input-border-radius: 16px;
-            --button-border-radius: 16px;
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4895ef;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --success-color: #4caf50;
+            --danger-color: #f44336;
+            --warning-color: #ff9800;
         }
 
-        /* Règles de base et fond principal */
         body {
             font-family: 'Poppins', sans-serif;
-            min-height: 100vh;
-            overflow-x: hidden;
-            background-color: #f1f5f9;
-            position: relative;
+            background-color: #f5f7fa;
             margin: 0;
-        }
-        
-        /* Mesh gradient moderne pour le fond */
-        .bg-mesh {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(ellipse at 20% 30%, rgba(109, 40, 217, 0.2) 0%, transparent 70%),
-                radial-gradient(ellipse at 80% 20%, rgba(16, 185, 129, 0.2) 0%, transparent 70%),
-                radial-gradient(ellipse at 50% 70%, rgba(99, 102, 241, 0.2) 0%, transparent 70%),
-                radial-gradient(ellipse at 10% 90%, rgba(217, 70, 239, 0.2) 0%, transparent 70%);
-            z-index: -2;
-        }
-
-        /* Grille décorative pour le fond */
-        .grid-pattern {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(rgba(226, 232, 240, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(226, 232, 240, 0.1) 1px, transparent 1px);
-            background-size: 30px 30px;
-            z-index: -1;
-        }
-
-        /* Formes flottantes décoratives */
-        .floating-shapes {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        .shape {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(30px);
-            opacity: 0.4;
-            animation: float 20s infinite ease-in-out;
-        }
-
-        .shape-1 {
-            width: 300px;
-            height: 300px;
-            background: linear-gradient(45deg, var(--primary), #8b5cf6);
-            top: -100px;
-            left: -100px;
-            animation-delay: 0s;
-        }
-
-        .shape-2 {
-            width: 350px;
-            height: 350px;
-            background: linear-gradient(-45deg, var(--accent), #0ea5e9);
-            bottom: -150px;
-            right: -100px;
-            animation-delay: 4s;
-        }
-
-        .shape-3 {
-            width: 250px;
-            height: 250px;
-            background: linear-gradient(135deg, #f472b6, #ec4899);
-            top: 60%;
-            left: 15%;
-            animation-delay: 8s;
-        }
-
-        @keyframes float {
-            0% {
-                transform: translateY(0) translateX(0) rotate(0);
-            }
-            25% {
-                transform: translateY(-30px) translateX(30px) rotate(5deg);
-            }
-            50% {
-                transform: translateY(0) translateX(60px) rotate(10deg);
-            }
-            75% {
-                transform: translateY(30px) translateX(30px) rotate(5deg);
-            }
-            100% {
-                transform: translateY(0) translateX(0) rotate(0);
-            }
-        }
-
-        /* Conteneur principal */
-        .container-fluid {
+            padding: 0;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            padding: 2rem;
         }
 
-        .login-wrapper {
+        .login-container {
             display: flex;
-            max-width: 1200px;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: var(--card-border-radius);
-            box-shadow: 
-                0 20px 50px -12px rgba(0, 0, 0, 0.1),
-                0 0 0 1px rgba(255, 255, 255, 0.3);
+            width: 1000px;
+            height: 600px;
+            background-color: white;
+            border-radius: 16px;
             overflow: hidden;
-            backdrop-filter: blur(10px);
-            position: relative;
-            z-index: 1;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
         }
 
-        /* Style pour la partie gauche (branding) */
+        /* Côté gauche - Branding */
         .brand-side {
-            flex: 1;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            width: 50%;
+            background-color: var(--primary-color);
             color: white;
-            padding: 3rem;
+            position: relative;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            position: relative;
-            display: none;
-        }
-
-        @media (min-width: 992px) {
-            .brand-side {
-                display: flex;
-            }
+            padding: 3rem;
+            justify-content: space-between;
+            overflow: hidden;
         }
 
         .brand-pattern {
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            right: 0;
+            bottom: 0;
             opacity: 0.1;
-            background-image: 
-                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.3) 0%, transparent 8%),
-                radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.3) 0%, transparent 8%),
-                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.3) 0%, transparent 8%);
-            background-size: 40px 40px;
-            background-position: 0 0, 20px 20px;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='1' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+
+        .brand-circles {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--accent-color) 0%, rgba(255,255,255,0) 70%);
+            bottom: -150px;
+            right: -150px;
+            opacity: 0.2;
         }
 
         .brand-logo {
-            margin-bottom: 3rem;
-            position: relative;
-            z-index: 2;
-            transform: translateY(-20px);
-            opacity: 0;
-            animation: fadeInUp 1s forwards;
-            animation-delay: 0.2s;
+            z-index: 1;
         }
 
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        .brand-tkh{
-            display:flex;
-            gap:10px;
+        .brand-tkh {
+            display: flex;
             align-items: center;
+            margin-bottom: 1rem;
         }
 
         .brand-icon {
-            
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
-            background: rgba(255, 255, 255, 0.2);
-            width: 120px;
-            height: 120px;
+            background-color: white;
+            color: var(--primary-color);
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 30px;
-            box-shadow: 
-                0 15px 25px -10px rgba(0, 0, 0, 0.2),
-                0 0 0 1px rgba(255, 255, 255, 0.2);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .brand-icon::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                45deg,
-                transparent 40%,
-                rgba(255, 255, 255, 0.3) 50%,
-                transparent 60%
-            );
-            transform: rotate(45deg);
-            animation: shimmer 6s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) rotate(45deg); }
+            margin-right: 12px;
+            font-size: 1.2rem;
         }
 
         .brand-title {
-            font-size: 2.8rem;
+            font-size: 2rem;
             font-weight: 700;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(90deg, #ffffff, #e2e8f0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -0.5px;
+            margin: 0;
         }
 
         .brand-subtitle {
-            font-size: 1.25rem;
-            margin-bottom: 3rem;
-            opacity: 0.9;
+            font-size: 1rem;
+            font-weight: 300;
+            opacity: 0.8;
+            margin-top: 0;
         }
 
         .features-list {
-            width: 100%;
-            max-width: 400px;
-            position: relative;
-            z-index: 2;
+            z-index: 1;
         }
 
         .feature-item {
             display: flex;
             align-items: center;
             margin-bottom: 1.5rem;
-            background: rgba(255, 255, 255, 0.15);
-            padding: 1.25rem;
-            border-radius: 20px;
-            backdrop-filter: blur(5px);
-            box-shadow: 
-                0 10px 15px -5px rgba(0, 0, 0, 0.1),
-                0 0 0 1px rgba(255, 255, 255, 0.1);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            transform: translateX(-20px);
-            opacity: 0;
-            animation: fadeInRight 1s forwards;
-        }
-
-        .feature-item:nth-child(1) { animation-delay: 0.4s; }
-        .feature-item:nth-child(2) { animation-delay: 0.6s; }
-        .feature-item:nth-child(3) { animation-delay: 0.8s; }
-
-        @keyframes fadeInRight {
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .feature-item:hover {
-            transform: translateY(-8px) scale(1.03);
-            box-shadow: 
-                0 20px 30px -10px rgba(0, 0, 0, 0.15),
-                0 0 0 1px rgba(255, 255, 255, 0.2);
         }
 
         .feature-icon {
-            background: rgba(255, 255, 255, 0.25);
-            width: 60px;
-            height: 60px;
-            border-radius: 16px;
+            background-color: rgba(255, 255, 255, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-right: 1.25rem;
-            font-size: 1.5rem;
-            transition: all 0.3s;
-        }
-
-        .feature-item:hover .feature-icon {
-            transform: rotate(10deg);
+            margin-right: 12px;
         }
 
         .feature-text {
-            font-size: 1.1rem;
-            text-align: left;
-            font-weight: 500;
+            font-weight: 400;
         }
 
-        /* Style pour la partie droite (formulaire) */
+        /* Côté droit - Formulaire */
         .form-side {
-            flex: 1;
-            padding: 3.5rem;
+            width: 50%;
+            padding: 3rem;
             display: flex;
             flex-direction: column;
             justify-content: center;
         }
 
-        .form-header {
-            margin-bottom: 3rem;
+        .welcome-header {
+            margin-bottom: 2rem;
             text-align: center;
-            transform: translateY(-20px);
-            opacity: 0;
-            animation: fadeInUp 1s forwards;
         }
 
-        .welcome-message {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 0.75rem;
-            background: linear-gradient(90deg, var(--primary-dark), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .welcome-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
         }
 
-        .welcome-subtitle {
-            color: var(--gray);
-            font-size: 1.15rem;
+        .welcome-text {
+            color: #6c757d;
+            margin-top: 0;
         }
 
-        .input-group {
+        .alert {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding: 12px 16px;
+            border-radius: 8px;
+            background-color: #FEE2E2;
+            border: 1px solid #FCA5A5;
+        }
+
+        .alert-danger {
+            color: #B91C1C;
+        }
+
+        .alert-icon {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        .input-wrapper {
             position: relative;
-            margin-bottom: 2.25rem;
-            transform: translateY(20px);
-            opacity: 0;
-            animation: fadeInUp 0.8s forwards;
-        }
-
-        .input-group:nth-child(1) { animation-delay: 0.2s; }
-        .input-group:nth-child(2) { animation-delay: 0.4s; }
-
-        .form-control {
-            height: 65px;
-            background-color: var(--light);
-            border: 2px solid var(--gray-light);
-            border-radius: var(--input-border-radius);
-            padding: 0.75rem 1rem 0.75rem 4rem;
-            font-size: 1.1rem;
-            transition: all 0.3s;
-            box-shadow: 0 4px 10px -2px rgba(0, 0, 0, 0.05);
-        }
-
-        .form-control:focus {
-            border-color: var(--primary);
-            box-shadow: 
-                0 8px 15px -5px rgba(109, 40, 217, 0.25),
-                0 0 0 2px rgba(109, 40, 217, 0.1);
-            transform: translateY(-2px);
+            margin-bottom: 1.5rem;
         }
 
         .input-icon {
             position: absolute;
-            left: 1.5rem;
             top: 50%;
+            left: 16px;
             transform: translateY(-50%);
-            color: var(--gray);
-            font-size: 1.25rem;
-            transition: all 0.3s;
-            z-index: 2;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 1.5rem;
+            color: #6c757d;
         }
 
-        .form-control:focus ~ .input-icon {
-            color: var(--primary);
-            transform: translateY(-50%) scale(1.1);
+        .form-input {
+            width: 100%;
+            padding: 12px 16px 12px 45px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: border-color 0.2s;
         }
 
-        .form-floating > label {
-            left: 4rem;
-            top: 0.5rem;
-            z-index: 3;
-            padding-left: 0;
-            transform-origin: left top;
-            color: var(--gray);
-            transition: all 0.3s;
-        }
-
-        .form-floating > .form-control:focus ~ label,
-        .form-floating > .form-control:not(:placeholder-shown) ~ label {
-            opacity: 0.8;
-            transform: scale(0.85) translateY(-1rem) translateX(0);
-            padding-left: 0.5rem;
-            color: var(--primary);
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.1);
         }
 
         .remember-forgot {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 2.5rem;
-            transform: translateY(20px);
-            opacity: 0;
-            animation: fadeInUp 0.8s forwards;
-            animation-delay: 0.6s;
+            margin-bottom: 1.5rem;
         }
 
-        .form-check {
+        .custom-checkbox {
             display: flex;
             align-items: center;
-        }
-
-        .form-check-input {
-            width: 1.3em;
-            height: 1.3em;
-            margin-right: 0.5rem;
-            background-color: var(--light);
-            border: 2px solid var(--gray-light);
-            border-radius: 0.3em;
+            position: relative;
             cursor: pointer;
-            transition: all 0.3s;
+            user-select: none;
         }
 
-        .form-check-input:checked {
-            background-color: var(--primary);
-            border-color: var(--primary);
-            box-shadow: 0 0 0 2px rgba(109, 40, 217, 0.2);
-        }
-
-        .form-check-label {
+        .custom-checkbox input {
+            position: absolute;
+            opacity: 0;
             cursor: pointer;
-            font-size: 0.95rem;
-            color: var(--dark);
+            height: 0;
+            width: 0;
+        }
+
+        .checkmark {
+            height: 18px;
+            width: 18px;
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            margin-right: 8px;
+        }
+
+        .custom-checkbox:hover input ~ .checkmark {
+            background-color: #f8f9fa;
+        }
+
+        .custom-checkbox input:checked ~ .checkmark {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        .custom-checkbox input:checked ~ .checkmark:after {
+            display: block;
+        }
+
+        .custom-checkbox .checkmark:after {
+            left: 6px;
+            top: 2px;
+            width: 6px;
+            height: 12px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .checkbox-label {
+            font-size: 0.9rem;
+            color: #6c757d;
         }
 
         .forgot-link {
-            color: var(--primary);
-            font-size: 0.95rem;
+            font-size: 0.9rem;
+            color: var(--primary-color);
             text-decoration: none;
-            transition: all 0.3s;
-            position: relative;
-            font-weight: 500;
-        }
-
-        .forgot-link::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(to right, var(--primary), var(--accent));
-            transition: width 0.3s;
-        }
-
-        .forgot-link:hover::after {
-            width: 100%;
         }
 
         .forgot-link:hover {
-            color: var(--primary-dark);
+            text-decoration: underline;
         }
 
-        .btn-login {
-            height: 65px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-            border: none;
-            border-radius: var(--button-border-radius);
-            color: white;
-            font-size: 1.15rem;
-            font-weight: 600;
-            transition: all 0.4s;
-            box-shadow: 
-                0 10px 20px -5px rgba(109, 40, 217, 0.4),
-                0 0 0 2px rgba(109, 40, 217, 0.05);
-            transform: translateY(20px);
-            opacity: 0;
-            animation: fadeInUp 0.8s forwards;
-            animation-delay: 0.8s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-login::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
+        .login-btn {
             width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent 0%,
-                rgba(255, 255, 255, 0.2) 50%,
-                transparent 100%
-            );
-            transition: left 0.7s;
-        }
-
-        .btn-login:hover::before {
-            left: 100%;
-        }
-
-        .btn-login:hover {
-            transform: translateY(-5px);
-            box-shadow: 
-                0 15px 30px -5px rgba(109, 40, 217, 0.5),
-                0 0 0 2px rgba(109, 40, 217, 0.1);
-            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
-        }
-
-        .btn-login:active {
-            transform: translateY(0);
-        }
-
-        .or-divider {
-            display: flex;
-            align-items: center;
-            margin: 2.5rem 0;
-            color: var(--gray);
-            transform: translateY(20px);
-            opacity: 0;
-            animation: fadeInUp 0.8s forwards;
-            animation-delay: 1s;
-        }
-
-        .or-divider::before,
-        .or-divider::after {
-            content: "";
-            flex: 1;
-            height: 2px;
-            background: linear-gradient(to right, transparent, var(--gray-light), transparent);
-        }
-
-        .or-divider span {
-            padding: 0 1.25rem;
-            font-size: 0.95rem;
+            padding: 12px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
             font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .login-btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .separator {
+            position: relative;
+            text-align: center;
+            margin: 1.5rem 0;
+        }
+
+        .separator::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 45%;
+            height: 1px;
+            background-color: #dee2e6;
+        }
+
+        .separator::after {
+            content: "";
+            position: absolute;
+            right: 0;
+            top: 50%;
+            width: 45%;
+            height: 1px;
+            background-color: #dee2e6;
+        }
+
+        .separator span {
+            display: inline-block;
+            padding: 0 10px;
+            background-color: white;
+            position: relative;
+            z-index: 1;
+            color: #6c757d;
+            font-size: 0.9rem;
         }
 
         .social-login {
             display: flex;
             justify-content: center;
-            gap: 1.25rem;
-            margin-bottom: 2.5rem;
-            transform: translateY(20px);
-            opacity: 0;
-            animation: fadeInUp 0.8s forwards;
-            animation-delay: 1.2s;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
         }
 
         .social-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 65px;
-            height: 65px;
-            border-radius: var(--button-border-radius);
-            background-color: var(--light);
-            border: 2px solid var(--gray-light);
-            font-size: 1.5rem;
-            transition: all 0.4s;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 5px 15px -5px rgba(0, 0, 0, 0.1);
-        }
-
-        .social-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.05);
-            transform: translateY(100%);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .social-btn:hover::before {
-            transform: translateY(0);
+            border: 1px solid #dee2e6;
+            background-color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.2s;
         }
 
         .social-btn:hover {
-            transform: translateY(-8px);
-            box-shadow: 
-                0 15px 25px -10px rgba(0, 0, 0, 0.15),
-                0 0 0 2px rgba(0, 0, 0, 0.02);
+            transform: translateY(-3px);
         }
 
         .google-btn {
             color: #DB4437;
         }
 
+        .google-btn:hover {
+            background-color: rgba(219, 68, 55, 0.1);
+        }
+
         .microsoft-btn {
-            color: #0078D4;
+            color: #00a1f1;
+        }
+
+        .microsoft-btn:hover {
+            background-color: rgba(0, 161, 241, 0.1);
         }
 
         .apple-btn {
-            color: #000000;
+            color: #000;
         }
 
-        .signup-link {
+        .apple-btn:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .register-link {
             text-align: center;
-            margin-top: 2rem;
-            color: var(--gray);
-            font-size: 0.95rem;
-            transform: translateY(20px);
-            opacity: 0;
-            animation: fadeInUp 0.8s forwards;
-            animation-delay: 1.4s;
+            font-size: 0.9rem;
+            color: #6c757d;
         }
 
-        .signup-link a {
-            color: var(--primary);
+        .register-link a {
+            color: var(--primary-color);
             text-decoration: none;
-            font-weight: 600;
-            transition: color 0.3s;
-            position: relative;
         }
 
-        .signup-link a::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(to right, var(--primary), var(--accent));
-            transition: width 0.3s;
+        .register-link a:hover {
+            text-decoration: underline;
         }
 
-        .signup-link a:hover::after {
-            width: 100%;
+        .d-none {
+            display: none !important;
         }
 
-        .signup-link a:hover {
-            color: var(--primary-dark);
-        }
-
-        .alert {
-            border-radius: 16px;
-            padding: 1.25rem;
-            margin-bottom: 2.5rem;
-            display: flex;
-            align-items: flex-start;
-            border: none;
-            background: rgba(239, 68, 68, 0.1);
-            box-shadow: 
-                0 10px 15px -5px rgba(239, 68, 68, 0.1),
-                0 0 0 1px rgba(239, 68, 68, 0.1);
-        }
-
-        .alert-danger {
-            border-left: 4px solid #ef4444;
-        }
-
-        .alert-icon {
-            margin-right: 1rem;
-            font-size: 1.5rem;
-            color: #ef4444;
-        }
-
-        /* Animation de chargement pour le bouton */
-        .btn-loading {
-            position: relative;
-            pointer-events: none;
-        }
-
-        .btn-loading::after {
-            content: "";
-            position: absolute;
-            width: 24px;
-            height: 24px;
-            top: 50%;
-            left: 50%;
-            margin-left: -12px;
-            margin-top: -12px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
+        /* Spinner pour le bouton */
+        .spinner-border {
+            display: inline-block;
+            width: 1rem;
+            height: 1rem;
+            vertical-align: text-bottom;
+            border: 0.2em solid currentColor;
+            border-right-color: transparent;
             border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s ease-in-out infinite;
+            animation: spinner-border .75s linear infinite;
         }
 
-        @keyframes spin {
+        @keyframes spinner-border {
             to { transform: rotate(360deg); }
         }
 
         /* Responsive */
-        @media (max-width: 991.98px) {
-            .login-wrapper {
+        @media (max-width: 992px) {
+            .login-container {
+                width: 90%;
+                height: auto;
                 flex-direction: column;
-                max-width: 500px;
             }
             
-            .form-side {
-                padding: 2.5rem 2rem;
+            .brand-side, .form-side {
+                width: 100%;
             }
             
-            .welcome-message {
-                font-size: 2rem;
+            .brand-side {
+                padding: 2rem;
+                text-align: center;
             }
             
-            .form-control {
-                height: 60px;
+            .brand-tkh {
+                justify-content: center;
             }
             
-            .btn-login {
-                height: 60px;
-            }
-            
-            .social-btn {
-                width: 60px;
-                height: 60px;
+            .feature-item {
+                justify-content: center;
             }
         }
 
-        @media (max-width: 575.98px) {
-            .container-fluid {
-                padding: 1rem;
+        @media (max-width: 576px) {
+            .login-container {
+                width: 95%;
             }
             
             .form-side {
                 padding: 2rem 1.5rem;
             }
-            
-            .welcome-message {
-                font-size: 1.75rem;
-            }
-            
-            .remember-forgot {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 1rem;
-            }
-            
-            .social-login {
-                gap: 0.75rem;
-            }
-            
-            .social-btn {
-                width: 55px;
-                height: 55px;
-            }
         }
-
-        /* Amélioration pour l'accessibilité - état focus visible */
-        a:focus, 
-        button:focus, 
-        input:focus, 
-        .form-check-input:focus {
-            outline: 2px solid var(--primary);
-            outline-offset: 2px;
-        }
-        
-        /* Ajout de police web pour améliorer l'apparence */
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
     </style>
 </head>
-
 <body>
-    <!-- Fond avec mesh gradient et grille -->
-    <div class="bg-mesh"></div>
-    <div class="grid-pattern"></div>
+<div class="login-container">
+  <!-- Côté gauche - Branding -->
+  <div class="brand-side">
+    <div class="brand-pattern"></div>
+    <div class="brand-circles"></div>
     
-    <!-- Formes flottantes décoratives -->
-    <div class="floating-shapes">
-        <div class="shape shape-1"></div>
-        <div class="shape shape-2"></div>
-        <div class="shape shape-3"></div>
+    <div class="brand-logo">
+      <div class="brand-tkh">
+        <div class="brand-icon">
+          <i class="fas fa-layer-group"></i>
+        </div>
+        <h1 class="brand-title">SRM</h1>
+      </div>
+      <p class="brand-subtitle">Gestion de parc informatique intelligente</p>
     </div>
 
-    <div class="container-fluid">
-        <div class="login-wrapper">
-            <!-- Côté gauche - Branding -->
-            <div class="brand-side">
-                <div class="brand-pattern"></div>
-                
-                <div class="brand-logo">
-                    <div class="brand-tkh">
-                    <div class="brand-icon">
-                        <i class="fas fa-layer-group"></i>
-                    </div>
-                    <h1 class="brand-title">SRM</h1></div>
-                    <p class="brand-subtitle">Gestion de parc informatique intelligente</p>
-                </div>
+    <div class="features-list">
+      <div class="feature-item">
+        <div class="feature-icon">
+          <i class="fas fa-chart-line"></i>
+        </div>
+        <div class="feature-text">Suivez vos actifs IT en temps réel</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">
+          <i class="fas fa-shield-alt"></i>
+        </div>
+        <div class="feature-text">Sécurisez votre infrastructure</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">
+          <i class="fas fa-magic"></i>
+        </div>
+        <div class="feature-text">Automatisez les tâches de maintenance</div>
+      </div>
+    </div>
+  </div>
 
-                <div class="features-list">
-                    <div class="feature-item">
-                        <div class="feature-icon">
-                            <i class="fas fa-chart-line"></i>
-                        </div>
-                        <div class="feature-text">Suivez vos actifs IT en temps réel</div>
-                    </div>
-                    <div class="feature-item">
-                        <div class="feature-icon">
-                            <i class="fas fa-shield-alt"></i>
-                        </div>
-                        <div class="feature-text">Sécurisez votre infrastructure</div>
-                    </div>
-                    <div class="feature-item">
-                        <div class="feature-icon">
-                            <i class="fas fa-magic"></i>
-                        </div>
-                        <div class="feature-text">Automatisez les tâches de maintenance</div>
-                    </div>
-                </div>
-            </div>
+  <!-- Côté droit - Formulaire -->
+  <div class="form-side">
+    <div class="welcome-header">
+      <h2 class="welcome-title">Bienvenue !</h2>
+      <p class="welcome-text">Connectez-vous à votre espace personnel</p>
+    </div>
 
-            <!-- Côté droit - Formulaire -->
-            <div class="form-side">
-                <div class="form-header">
-                    <h2 class="welcome-message">Bienvenue !</h2>
-                    <p class="welcome-subtitle">Connectez-vous pour accéder à votre espace</p>
-                </div>
+    <!-- Affichage des erreurs de validation Laravel -->
+    @if ($errors->any())
+    <div class="alert alert-danger" id="errors-container">
+        <div class="alert-icon"><i class="fas fa-exclamation-circle"></i></div>
+        <div class="alert-content">
+            @foreach ($errors->all() as $error)
+                <div>{{ $error }}</div>
+            @endforeach
+        </div>
+    </div>
+    @else
+    <div class="alert alert-danger d-none" id="errors-container">
+      <div class="alert-icon"><i class="fas fa-exclamation-circle"></i></div>
+      <div class="alert-content">
+        <!-- Les erreurs seront injectées ici -->
+      </div>
+    </div>
+    @endif
 
-                <!-- Alerte (masquée par défaut) -->
-                <div class="alert alert-danger d-none" id="errors-container">
-                    <div class="alert-icon"><i class="fas fa-exclamation-circle"></i></div>
-                    <div class="alert-content">
-                        <!-- Les erreurs seront injectées ici -->
-                    </div>
-                </div>
+    <form id="login-form" action="{{ route('login.submit') }}" method="POST">
+      @csrf
+      <div class="input-wrapper">
+        <i class="input-icon fas fa-envelope"></i>
+        <input type="email" class="form-input" id="email" name="email" placeholder="Adresse email" value="{{ old('email') }}" required>
+      </div>
 
-                <form id="login-form">
-                    <div class="input-group form-floating">
-                        <input type="email" class="form-control" id="email" name="email" placeholder=" " required>
-                        <label for="email">Adresse email</label>
-                        <div class="input-icon">
-                            <i class="fas fa-envelope"></i>
-                        </div>
-                    </div>
+      <div class="input-wrapper">
+        <i class="input-icon fas fa-lock"></i>
+        <input type="password" class="form-input" id="password" name="password" placeholder="Mot de passe" required>
+      </div>
 
-                    <div class="input-group form-floating">
-                        <input type="password" class="form-control" id="password" name="password" placeholder=" " required>
-                        <label for="password">Mot de passe</label>
-                        <div class="input-icon">
-                            <i class="fas fa-lock"></i>
-                        </div>
-                    </div>
+      <div class="remember-forgot">
+        <label class="custom-checkbox">
+          <input type="checkbox" id="remember" name="remember">
+          <span class="checkmark"></span>
+          <span class="checkbox-label">Se souvenir de moi</span>
+        </label>
+        <a href="{{ route('password.request') }}" class="forgot-link">Mot de passe oublié ?</a>
+      </div>
 
-                    <div class="remember-forgot">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="remember" name="remember">
-                            <label class="form-check-label" for="remember">
-                                Se souvenir de moi
-                            </label>
-                        </div>
-                        <a href="#" class="forgot-link">Mot de passe oublié ?</a>
-                    </div>
+      <button type="submit" class="login-btn" id="login-button">
+        Se connecter
+      </button>
+    </form>
 
-                    <button type="submit" class="btn btn-login w-100" id="login-button">
-                        Se connecter
-                    </button>
-                </form>
+    <div class="separator">
+      <span>ou</span>
+    </div>
 
-                <div class="or-divider">
-                    <span>ou</span>
-                </div>
+    <div class="social-login">
+      <button class="social-btn google-btn">
+        <i class="fab fa-google"></i>
+      </button>
+      <button class="social-btn microsoft-btn">
+        <i class="fab fa-microsoft"></i>
+      </button>
+      <button class="social-btn apple-btn">
+        <i class="fab fa-apple"></i>
+      </button>
+    </div>
 
-                <div class="social-login">
-                    <button class="social-btn google-btn">
-                        <i class="fab fa-google"></i>
-                    </button>
-                    <button class="social-btn microsoft-btn">
-                        <i class="fab fa-microsoft"></i>
-                    </button>
-                    <button class="social-btn apple-btn">
-                        <i class="fab fa-apple"></i>
-                    </button>
-                </div>
+    <p class="register-link">
+      Vous n'avez pas de compte ? <a href="#">Contactez votre administrateur</a>
+    </p>
+  </div>
+</div>
 
-                <p class="signup-link">
-                    Vous n'avez pas de compte ? <a href="#">Contactez votre administrateur
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const loginForm = document.getElementById('login-form');
+    const loginButton = document.getElementById('login-button');
+    const errorsContainer = document.getElementById('errors-container');
+    const errorsContent = errorsContainer.querySelector('.alert-content');
+    
+    loginForm.addEventListener('submit', function(e) {
+        // Validation côté client
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        let errors = [];
+        
+        if (!email) {
+            e.preventDefault();
+            errors.push("L'adresse email est requise");
+        } else if (!/\S+@\S+\.\S+/.test(email)) {
+            e.preventDefault();
+            errors.push("L'adresse email n'est pas valide");
+        }
+        
+        if (!password) {
+            e.preventDefault();
+            errors.push("Le mot de passe est requis");
+        } else if (password.length < 6) {
+            e.preventDefault();
+            errors.push("Le mot de passe doit contenir au moins 6 caractères");
+        }
+        
+        // Affichage des erreurs ou soumission du formulaire
+        if (errors.length > 0) {
+            errorsContent.innerHTML = errors.map(error => `<div>${error}</div>`).join('');
+            errorsContainer.classList.remove('d-none');
+        } else {
+            errorsContainer.classList.add('d-none');
+            loginButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Connexion...';
+            loginButton.disabled = true;
+            // Le formulaire sera naturellement soumis si e.preventDefault() n'est pas appelé
+        }
+    });
+    
+    // Vérification de redirection automatique si déjà connecté
+    @if (Auth::check())
+        window.location.href = "{{ route('dashboard') }}";
+    @endif
+});
+</script>
+</body>
+</html>

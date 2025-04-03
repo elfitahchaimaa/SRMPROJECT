@@ -19,6 +19,7 @@ return [
     */
 
     'driver' => env('SESSION_DRIVER', 'file'),
+    
 
     /*
     |--------------------------------------------------------------------------
@@ -30,6 +31,7 @@ return [
     | to immediately expire on the browser closing, set that option.
     |
     */
+    'same_site' => 'lax',
 
     'lifetime' => env('SESSION_LIFETIME', 120),
 
