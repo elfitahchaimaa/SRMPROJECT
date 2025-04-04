@@ -1,11 +1,10 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AccueilController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\PaieController;
-
+use App\Http\Controllers\AgentController;
+use App\Http\Controllers\MaterielController;
 // 🏠 Page d'accueil
 Route::get('/', [AccueilController::class, 'index'])->name('accueil.index');
 Route::post('/services', [AccueilController::class, 'store'])->name('services.store');
@@ -19,5 +18,10 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 Route::get('/password/reset', [AuthController::class, 'forgotPasswordForm'])->name('password.request')->middleware('guest');
 Route::post('/password/reset', [AuthController::class, 'sendResetLink'])->name('password.email')->middleware('guest');
 
-// 📊 Dashboard (sans middleware)
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+// 📊 Dashboard - redirigé vers une autre page comme mesure temporaire
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+
+// route de agent
+Route::resource('agents', AgentController::class);
+Route::resource('materiels', MaterielController::class);
+Route::resource('materiels', MaterielController::class)->except(['show']);

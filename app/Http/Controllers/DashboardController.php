@@ -1,10 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Equipment;
+use App\Models\Equipement;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
@@ -16,10 +15,10 @@ class DashboardController extends Controller
 
     public function index()
     {
-        $equipments = Equipment::all(); // Récupération des équipements
+        $equipments = Equipement::all(); // Corrected from Equipment to Equipement
         return view('dashboard.index', compact('equipments'));
         
-        dd(Auth::check()); // Devrait afficher "true" si l'utilisateur est bien connecté
+        // Note: La ligne ci-dessous est commentée car elle arrêterait l'exécution avant le return
+        // dd(Auth::check()); // Devrait afficher "true" si l'utilisateur est bien connecté
     }
 }
-
