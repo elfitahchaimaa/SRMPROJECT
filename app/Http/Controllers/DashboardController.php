@@ -13,12 +13,12 @@ class DashboardController extends Controller
         $this->middleware('auth'); // Assure que seuls les utilisateurs connectés y accèdent
     }
 
-    public function index()
-    {
-        $equipments = Equipement::all(); // Corrected from Equipment to Equipement
-        return view('dashboard.index', compact('equipments'));
-        
-        // Note: La ligne ci-dessous est commentée car elle arrêterait l'exécution avant le return
-        // dd(Auth::check()); // Devrait afficher "true" si l'utilisateur est bien connecté
-    }
+    // Dans DashboardController.php
+public function index()
+{
+    return view('dashboard.index', [
+        'createMaterielRoute' => route('materiels.create'),
+        'createAgentRoute' => route('agents.create')
+    ]);
+}
 }
